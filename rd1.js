@@ -1,6 +1,6 @@
 function main() {
 
-/* Canvas要素の定義など */
+// Defining canvas elements //
 var cs  = document.getElementById('myCanvas');
 var ctx = cs.getContext('2d');
 var cx=cs.width;
@@ -8,7 +8,7 @@ var cy=cs.height;
 
 
 
-//グローバルパラメータの初期設定
+// Initialization of the global parameters
 var calcOn =false;
 
 var dt = 0.2;
@@ -20,7 +20,7 @@ var pActLimit=0.2, pInhLimit=0.5
 var diffConstA=0.02; diffConstI=0.5;
 var decayConstA=0.03, decayConstI=0.06;
 
-//反応と拡散のパラメータの設定
+// Parameters for diffusion and reaction
 var parameterSet= new Array(100);
  for (var i=0; i<20; i++){
    parameterSet[i]=new Array(20);
@@ -54,12 +54,12 @@ parameterSet[10]=[0.1,-0.08,0,0.11,0,-0.15,0.2,0.5,0.04,0.2,0.03,0.02];
 
 
 
-//描画に関する変数の定義と数値の代入
-  var fieldSize=100; //場の大きさ
-  var cellSize=6; //1細胞の大きさ
+//Variables for drawing
+  var fieldSize=100; //filed size
+  var cellSize=6; //cell size
 
 
-// 配列の定義
+// Definition of arrays
     var actConc = new Array(100);
     var inhConc = new Array(100);
     var actDiffArray = new Array(100);
@@ -72,7 +72,7 @@ parameterSet[10]=[0.1,-0.08,0,0.11,0,-0.15,0.2,0.5,0.04,0.2,0.03,0.02];
     }
 
 
-// button操作時に呼び出す関数の設定
+// Funtions called by button action
 document.getElementById("runButton").addEventListener("click", handleRunButton);
 document.getElementById("stopButton").addEventListener("click", handleStopButton);
 document.getElementById("randomizeButton").addEventListener("click", handleRandomButton);
@@ -82,12 +82,12 @@ document.getElementById("xxx").addEventListener("click", changeParameterSet);
 
 
 
-//ペンのON-offと初期値の変数定義
+// Settings for the pen for drawing with mouse
   var drawing = false;
   var penDensity=100;
   var penSize=1;
 
-//お絵描き用の要素取得
+// Listening to mouse actions
 cs.addEventListener('mousedown', function(e) {
   drawing = true;
   var rect = e.target.getBoundingClientRect();
@@ -118,7 +118,7 @@ cs.addEventListener('mouseup', function() {
 
 
 
-// ここからが、メインのプログラム＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+// Main
 randomizeArray();
 drawSkin();
 
@@ -133,15 +133,8 @@ var intervalId;
 
 
 
-
-
-
-// ここまで
-
-
-// 以下、関数の定義＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-
-// 計算と描画
+// =========================== FUNCTIONS ===========================
+// Run calculation
 function runCalculation(){
   if (calcOn==true){
     drawSkin();
@@ -153,11 +146,11 @@ function runCalculation(){
 }
 
 
-// 描画＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+// Drawing===========================
 
-// 1個の細胞を描画する（濃度＊２５５倍）
+// Draw a single cell
 function drawCell(px,py,c){
-  var x =px*cellSize;           // 細胞の座標
+  var x =px*cellSize;           // coordinate of the cell
   var y =py*cellSize;
   var cc=c*50;
 //    var cc=c*1;
@@ -167,7 +160,7 @@ function drawCell(px,py,c){
   ctx.fillStyle = "rgb(" + cc + "," + cc + "," + cc + ")";
   ctx.fillRect(x, y, cellSize, cellSize);
 }
-//皮膚全体を描画する
+// Draw a whole skin
 function drawSkin(){
   for (var i=0; i<100; i++){
     for  (var j=0; j<100; j++){
@@ -175,9 +168,9 @@ function drawSkin(){
 }}}
 
 
-//配列の操作＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+//Handling Arrays===========================
 
-//配列actConc, inhConcに乱数（0～１）を入力
+//Set actConc and inhConc with random values (0~1)
 function randomizeArray(){
   for (var i=0; i<100; i++){
     for  (var j=0; j<100; j++){
@@ -185,7 +178,7 @@ function randomizeArray(){
     inhConc[i][j]=3*Math.random();
 }}}
 
-//配列actConc, inhConcに0を入力
+//Set actConc and inhConc with 0
 function clearArray(){
   for (var i=0; i<100; i++){
     for  (var j=0; j<100; j++){
@@ -193,7 +186,7 @@ function clearArray(){
     inhConc[i][j]=0;
 }}}
 
-// 拡散計算用の配列の計算
+// Array for calculation of diffusion
 function setDiffusionArray(){
   var root2=Math.sqrt(2);
   var pp=1;
@@ -219,7 +212,7 @@ function setDiffusionArray(){
       inhDiffArray[i][j]=diffConstI*dt*(rightCell+leftCell+upperCell+lowerCell+rightUpper+leftUpper+rightDown+leftDown-(4+4*root2/pp)*inhConc[i][j])/ds/ds;
 }}}
 
-//拡散の計算
+// Cacluation of diffusion
 function calcDiffusion(){
   setDiffusionArray();
   for (var i=0; i<100; i++){
@@ -228,7 +221,7 @@ function calcDiffusion(){
     inhConc[i][j]+=inhDiffArray[i][j];
 }}}
 
-// 反応項の計算
+// Calcuation of reaction terms
 function calcReaction(){
   for (var i=0; i<100; i++){
     for  (var j=0; j<100; j++){
@@ -254,7 +247,7 @@ function calcReaction(){
 
 
 
-//ボタンの操作＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+// Button actions
 function handleRunButton(){
   readParameter();
   calcOn = true;
@@ -275,7 +268,7 @@ function handleRunButton(){
     drawSkin();
   }
 
-  //parameterの値をウインドウから取得
+  // retrieve parameter values
   function readParameter(){
     var box1 =document.getElementById("pActAct-id").value;
         pActAct=Number(box1);
@@ -335,7 +328,7 @@ function handleRunButton(){
   }
 
 
-//oekaki tool
+//drawing tool
   function pendrawing(x,y){
     for (i=x-penSize; i<x+penSize+1; i++){
         for (j=y-penSize; j<y+penSize+1; j++){
@@ -346,9 +339,5 @@ function handleRunButton(){
     }
     }
   }
-
-
-
-//コントロール　ここまで
 }
 
