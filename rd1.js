@@ -29,16 +29,15 @@ var parameterSet= new Array(100);
 //preset parameter sets
 parameterSet[0]=[0.08,-0.08,0.1,0.11,0,-0.15,0.2,0.5,0.02,0.5,0.03,0.06];
 parameterSet[1]=[0.08,-0.08,0.01,0.11,0,-0.15,0.2,0.5,0.02,0.5,0.03,0.06];
-parameterSet[2]=[0.08,-0.08,0.2,0.11,0,-0.15,0.2,0.5,0.02,0.5,0.03,0.06];
-parameterSet[3]=[0.08,-0.08,0,0.08,0,-0.13,0.9,0.4,0.015,0.09,0.03,0.019];
-parameterSet[4]=[0.08,-0.092,0.0,0.06,0,-0.15,0.2,0.1,0.02,0.25,0.03,0.03];
-parameterSet[5]=[0.09,-0.08,0,0.1,0,-0.15,0.5,0.5,0.01,0.01,0.03,0.03];
-parameterSet[6]=[0.08,-0.08,0,0.11,0,-0.15,0.2,0.5,0.04,0.5,0.03,0.06];
-parameterSet[7]=[2,-6,0,0.2,0,0,1,5,0.02,0,0.1,0.6];
-parameterSet[8]=[0.09,-0.08,0,0.06,0,-0.19,0.2,0.5,0.01,0.03,0.03,0.03];
-parameterSet[9]=[0.1,-0.08,0,0.11,0,-0.15,0.2,0.5,0.04,0.2,0.03,0.02];
-
-
+parameterSet[2]=[0.08,-0.08,0.10 ,0.11,0,-0.15,0.2,0.5,0.01,0.5,0.03,0.09];
+parameterSet[3]=[0.08,-0.08,0.2,0.11,0,-0.15,0.2,0.5,0.02,0.5,0.03,0.06];
+parameterSet[4]=[0.08,-0.08,0,0.08,0,-0.13,0.9,0.4,0.015,0.09,0.03,0.019];
+parameterSet[5]=[0.08,-0.092,0.0,0.06,0,-0.15,0.2,0.1,0.02,0.25,0.03,0.03];
+parameterSet[6]=[0.09,-0.08,0,0.1,0,-0.15,0.5,0.5,0.01,0.01,0.03,0.03];
+parameterSet[7]=[0.08,-0.08,0,0.11,0,-0.15,0.2,0.5,0.04,0.5,0.03,0.06];
+parameterSet[8]=[2,-6,0,0.2,0,0,1,5,0.02,0,0.1,0.6];
+parameterSet[9]=[0.09,-0.08,0,0.06,0,-0.19,0.2,0.5,0.01,0.03,0.03,0.03];
+parameterSet[10]=[0.1,-0.08,0,0.11,0,-0.15,0.2,0.5,0.04,0.2,0.03,0.02];
 
 
 
@@ -123,7 +122,7 @@ cs.addEventListener('mouseup', function() {
 randomizeArray();
 drawSkin();
 
-setInterval(runCalculation,5);
+var intervalId;
 
 
 
@@ -256,10 +255,14 @@ function calcReaction(){
 
 
 //ボタンの操作＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-  function handleRunButton(){
-    readParameter();
-    calcOn=true;
-  }
+function handleRunButton(){
+  readParameter();
+  calcOn = true;
+  clearInterval(intervalId); // Clear previous if any
+  const intervalBox = document.getElementById("interval-id");
+  const interval = Number(intervalBox?.value || 100);
+  intervalId = setInterval(runCalculation, interval);
+}
   function handleStopButton(){
     calcOn=false;
   }

@@ -14,7 +14,7 @@
 <div id="title_area">
     <!--ページのタイトル  -->
     <p class="moji">Reaction-Diffusion System Simulator</p>
-    <p class="moji3">constructed by Shigeru Kondo (Osaka Univeristy, Japan)</p>
+    <p class="moji3">by Shigeru Kondo (Osaka Univeristy, Japan)</p>
 </div>
 
 <div id="result_area">
@@ -27,8 +27,10 @@
     <div>
       <input type="button" id="runButton" value="run" >
       <input type="button" id="stopButton"  value="stop" >
+      <input type="button" id="clearButton"  value="clear">
       <input type="button" id="randomizeButton"value="random" >
-      <input type="button" id="clearButton"  value="clear"><br>
+      
+      <br>
     </div>
 
 　  <!--1セレクターの要素を準備-->
@@ -37,6 +39,7 @@
       	<select style="font-size:40px" name="selectParameterSet">
       	    <option value="stripe">stripe</option>
       	    <option value="spots">spots</option>
+      	    <option value="spots inverted">inverted spots</option>
       	    <option value="network">network</option>
             <option value="leopard">leopard</option>
             <option value="giraffe">giraffe</option>
@@ -84,6 +87,11 @@
 	      maximum value of G(a,i)=<input type="text" id="pInhLimit-id" style="width:80px;font-size:32px;" value="0.5">
 	    </div>
 	</div>
+</div>
+
+<div class="textBox">
+  Simulation Interval (ms): 
+  <input type="number" id="interval-id" style="width:100px; font-size:28px;" value="100">
 </div>
 
   </body>
